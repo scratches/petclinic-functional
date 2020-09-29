@@ -15,7 +15,6 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import java.util.Collection;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -65,34 +64,6 @@ class OwnerController {
         else {
             this.owners.save(owner);
             return "redirect:/owners/" + owner.getId();
-        }
-    }
-
-    @GetMapping("/owners")
-    public String processFindForm(Owner owner, BindingResult result,
-            Map<String, Object> model) {
-
-        // allow parameterless GET request for /owners to return all records
-        if (owner.getLastName() == null) {
-            owner.setLastName(""); // empty string signifies broadest possible search
-        }
-
-        // find owners by last name
-        Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
-        if (results.isEmpty()) {
-            // no owners found
-            result.rejectValue("lastName", "notFound", "not found");
-            return "owners/findOwners";
-        }
-        else if (results.size() == 1) {
-            // 1 owner found
-            owner = results.iterator().next();
-            return "redirect:/owners/" + owner.getId();
-        }
-        else {
-            // multiple owners found
-            model.put("selections", results);
-            return "owners/ownersList";
         }
     }
 

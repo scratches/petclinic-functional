@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.owner;
 
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -67,6 +68,33 @@ public class OwnerRoutesTests {
                 .andExpect(model().attribute("owner",
                         hasProperty("telephone", is("6085551023"))))
                 .andExpect(view().name("owners/ownerDetails"));
+    }
+
+    @Test
+    public void testProcessFindFormSuccess() throws Exception {
+        given(this.owners.findByLastName(""))
+                .willReturn(Lists.newArrayList(george, new Owner()));
+        mockMvc.perform(get("/owners")).andExpect(status().isOk())
+                .andExpect(view().name("owners/ownersList"));
+    }
+
+    @Test
+    public void testProcessFindFormByLastName() throws Exception {
+        given(this.owners.findByLastName(george.getLastName()))
+                .willReturn(Lists.newArrayList(george));
+        mockMvc.perform(get("/owners").param("lastName", "Franklin"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+    }
+
+    @Test
+    public void testProcessFindFormNoOwnersFound() throws Exception {
+        mockMvc.perform(get("/owners").param("lastName", "Unknown Surname"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeHasFieldErrors("owner", "lastName"))
+                .andExpect(model().attributeHasFieldErrorCode("owner", "lastName",
+                        "notFound"))
+                .andExpect(view().name("owners/findOwners"));
     }
 
 }
