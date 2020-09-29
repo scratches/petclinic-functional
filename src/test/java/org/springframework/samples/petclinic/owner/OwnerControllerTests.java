@@ -23,8 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Dave Syer
  */
-@WebMvcTest(OwnerRoutes.class)
-public class OwnerRoutesTests {
+@WebMvcTest(OwnerController.class)
+public class OwnerControllerTests {
 
     private static final int TEST_OWNER_ID = 1;
 

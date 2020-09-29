@@ -36,7 +36,7 @@ import org.springframework.web.servlet.function.ServerResponse;
  *
  */
 @Configuration(proxyBeanMethods = false)
-class OwnerRoutes {
+class OwnerController {
 
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
@@ -44,7 +44,7 @@ class OwnerRoutes {
 
     private Validator validator;
 
-    public OwnerRoutes(OwnerRepository clinicService,
+    public OwnerController(OwnerRepository clinicService,
             @Qualifier("mvcValidator") Validator validator) {
         this.owners = clinicService;
         this.validator = validator;

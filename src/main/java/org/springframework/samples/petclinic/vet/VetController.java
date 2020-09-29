@@ -15,11 +15,15 @@
  */
 package org.springframework.samples.petclinic.vet;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import java.util.HashMap;
 
-import java.util.Map;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.servlet.function.RouterFunction;
+import org.springframework.web.servlet.function.RouterFunctions;
+import org.springframework.web.servlet.function.ServerRequest;
+import org.springframework.web.servlet.function.ServerResponse;
 
 /**
  * @author Juergen Hoeller
@@ -28,6 +32,7 @@ import java.util.Map;
  * @author Arjen Poutsma
  */
 @Controller
+@Configuration(proxyBeanMethods = false)
 class VetController {
 
     private final VetRepository vets;
@@ -36,23 +41,28 @@ class VetController {
         this.vets = clinicService;
     }
 
-    @GetMapping("/vets.html")
-    public String showVetList(Map<String, Object> model) {
+    @Bean
+    public RouterFunction<ServerResponse> ownerRoutes() {
+        return RouterFunctions.route().GET("/vets.html", this::showVetList)
+                .GET("/vets", this::vetsBody).build();
+    }
+
+    private ServerResponse showVetList(ServerRequest request) {
+        HashMap<String, Object> model = new HashMap<>();
         // Here we are returning an object of type 'Vets' rather than a collection of Vet
         // objects so it is simpler for Object-Xml mapping
         Vets vets = new Vets();
         vets.getVetList().addAll(this.vets.findAll());
         model.put("vets", vets);
-        return "vets/vetList";
+        return ServerResponse.ok().render("vets/vetList", model);
     }
 
-    @GetMapping({ "/vets" })
-    public @ResponseBody Vets showResourcesVetList() {
+    private ServerResponse vetsBody(ServerRequest request) {
         // Here we are returning an object of type 'Vets' rather than a collection of Vet
         // objects so it is simpler for JSon/Object mapping
         Vets vets = new Vets();
         vets.getVetList().addAll(this.vets.findAll());
-        return vets;
+        return ServerResponse.ok().body(vets);
     }
 
 }

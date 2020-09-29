@@ -1,14 +1,18 @@
 package org.springframework.samples.petclinic.system;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.function.RouterFunction;
+import org.springframework.web.servlet.function.RouterFunctions;
+import org.springframework.web.servlet.function.ServerResponse;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-
-@Controller
+@Configuration(proxyBeanMethods = false)
 class WelcomeController {
 
-    @GetMapping("/")
-    public String welcome() {
-        return "welcome";
+    @Bean
+    public RouterFunction<ServerResponse> ownerRoutes() {
+        return RouterFunctions.route()
+                .GET("/", request -> ServerResponse.ok().render("welcome")).build();
     }
+
 }

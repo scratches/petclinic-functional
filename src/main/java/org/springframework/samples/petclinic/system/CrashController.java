@@ -15,8 +15,12 @@
  */
 package org.springframework.samples.petclinic.system;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.function.RouterFunction;
+import org.springframework.web.servlet.function.RouterFunctions;
+import org.springframework.web.servlet.function.ServerRequest;
+import org.springframework.web.servlet.function.ServerResponse;
 
 /**
  * Controller used to showcase what happens when an exception is thrown
@@ -25,11 +29,15 @@ import org.springframework.web.bind.annotation.GetMapping;
  * <p/>
  * Also see how a view that resolves to "error" has been added ("error.html").
  */
-@Controller
+@Configuration(proxyBeanMethods = false)
 class CrashController {
 
-    @GetMapping("/oups")
-    public String triggerException() {
+    @Bean
+    public RouterFunction<ServerResponse> ownerRoutes() {
+        return RouterFunctions.route().GET("/oups", this::triggerException).build();
+    }
+
+    private ServerResponse triggerException(ServerRequest request) {
         throw new RuntimeException("Expected: controller used to showcase what "
                 + "happens when an exception is thrown");
     }
