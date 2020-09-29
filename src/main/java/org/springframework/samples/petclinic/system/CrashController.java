@@ -33,7 +33,7 @@ import org.springframework.web.servlet.function.ServerResponse;
 class CrashController {
 
     @Bean
-    public RouterFunction<ServerResponse> ownerRoutes() {
+    public RouterFunction<ServerResponse> crashRoutes() {
         return RouterFunctions.route().GET("/oups", this::triggerException).build();
     }
 

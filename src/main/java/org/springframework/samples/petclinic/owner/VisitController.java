@@ -15,15 +15,22 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.Map;
+import org.springframework.web.servlet.function.RouterFunction;
+import org.springframework.web.servlet.function.RouterFunctions;
+import org.springframework.web.servlet.function.ServerRequest;
+import org.springframework.web.servlet.function.ServerResponse;
 
 /**
  * @author Juergen Hoeller
@@ -32,35 +39,42 @@ import java.util.Map;
  * @author Michael Isvy
  * @author Dave Syer
  */
-@Controller
+@Configuration(proxyBeanMethods = false)
 class VisitController {
 
     private final VisitRepository visits;
     private final PetRepository pets;
 
+    private Validator validator;
 
-    public VisitController(VisitRepository visits, PetRepository pets) {
+    public VisitController(VisitRepository visits, PetRepository pets,
+            @Qualifier("mvcValidator") Validator validator) {
         this.visits = visits;
         this.pets = pets;
+        this.validator = validator;
     }
 
-    @InitBinder
-    public void setAllowedFields(WebDataBinder dataBinder) {
+    @Bean
+    public RouterFunction<ServerResponse> visitRoutes() {
+        return RouterFunctions.route().path("/owners", builder -> builder //
+                .GET("/*/pets/{petId}/visits/new", this::initNewVisitForm) //
+                .POST("/{ownerId}/pets/{petId}/visits/new", this::processNewVisitForm) //
+        ).build();
+    }
+
+    private void setAllowedFields(WebDataBinder dataBinder) {
         dataBinder.setDisallowedFields("id");
     }
 
     /**
-     * Called before each and every @RequestMapping annotated method.
-     * 2 goals:
-     * - Make sure we always have fresh data
-     * - Since we do not use the session scope, make sure that Pet object always has an id
-     * (Even though id is not part of the form fields)
+     * Called before each and every @RequestMapping annotated method. 2 goals: - Make sure
+     * we always have fresh data - Since we do not use the session scope, make sure that
+     * Pet object always has an id (Even though id is not part of the form fields)
      *
      * @param petId
      * @return Pet
      */
-    @ModelAttribute("visit")
-    public Visit loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model) {
+    private Visit loadPetWithVisit(int petId, Map<String, Object> model) {
         Pet pet = this.pets.findById(petId);
         model.put("pet", pet);
         Visit visit = new Visit();
@@ -68,21 +82,41 @@ class VisitController {
         return visit;
     }
 
-    // Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
-    @GetMapping("/owners/*/pets/{petId}/visits/new")
-    public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
-        return "pets/createOrUpdateVisitForm";
+    private ServerResponse initNewVisitForm(ServerRequest request) {
+        Map<String, Object> model = new HashMap<>();
+        Integer petId = Integer.valueOf(request.pathVariable("petId"));
+        model.put("petId", petId);
+        model.put("visit", loadPetWithVisit(petId, model));
+        return ServerResponse.ok().render("pets/createOrUpdateVisitForm", model);
     }
 
-    // Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is called
-    @PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-    public String processNewVisitForm(@Valid Visit visit, BindingResult result) {
+    private ServerResponse processNewVisitForm(ServerRequest request) {
+        Map<String, Object> model = new HashMap<>();
+        Integer petId = Integer.valueOf(request.pathVariable("petId"));
+        model.put("petId", petId);
+        Visit visit = loadPetWithVisit(petId, model);
+        BindingResult result = bindVisit(visit, model, request);
+        model.put("ownerId", Integer.valueOf(request.pathVariable("ownerId")));
         if (result.hasErrors()) {
-            return "pets/createOrUpdateVisitForm";
-        } else {
-            this.visits.save(visit);
-            return "redirect:/owners/{ownerId}";
+            return ServerResponse.ok().render("pets/createOrUpdateVisitForm", model);
         }
+        else {
+            this.visits.save(visit);
+            return ServerResponse.ok().render("redirect:/owners/{ownerId}", model);
+        }
+    }
+
+    private BindingResult bindVisit(Visit visit, Map<String, Object> model,
+            ServerRequest request) {
+        ServletRequestDataBinder binder = new ServletRequestDataBinder(visit, "visit");
+        binder.setValidator(validator);
+        setAllowedFields(binder);
+        binder.bind(request.servletRequest());
+        binder.validate();
+        BindingResult result = binder.getBindingResult();
+        model.put("visit", visit);
+        model.put("org.springframework.validation.BindingResult.visit", result);
+        return result;
     }
 
 }

@@ -10,7 +10,7 @@ import org.springframework.web.servlet.function.ServerResponse;
 class WelcomeController {
 
     @Bean
-    public RouterFunction<ServerResponse> ownerRoutes() {
+    public RouterFunction<ServerResponse> welcomeRoutes() {
         return RouterFunctions.route()
                 .GET("/", request -> ServerResponse.ok().render("welcome")).build();
     }

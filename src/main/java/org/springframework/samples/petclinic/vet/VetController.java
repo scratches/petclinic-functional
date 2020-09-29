@@ -19,7 +19,6 @@ import java.util.HashMap;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.RouterFunctions;
 import org.springframework.web.servlet.function.ServerRequest;
@@ -31,7 +30,6 @@ import org.springframework.web.servlet.function.ServerResponse;
  * @author Ken Krebs
  * @author Arjen Poutsma
  */
-@Controller
 @Configuration(proxyBeanMethods = false)
 class VetController {
 
@@ -42,7 +40,7 @@ class VetController {
     }
 
     @Bean
-    public RouterFunction<ServerResponse> ownerRoutes() {
+    public RouterFunction<ServerResponse> vetRoutes() {
         return RouterFunctions.route().GET("/vets.html", this::showVetList)
                 .GET("/vets", this::vetsBody).build();
     }
