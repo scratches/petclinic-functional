@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.RouterFunctions;
 import org.springframework.web.servlet.function.ServerRequest;
@@ -56,6 +57,8 @@ class OwnerRoutes {
                 .GET("/find", this::initFindForm) //
                 .GET("/new", this::initCreationForm) //
                 .POST("/new", this::processCreationForm) //
+                .GET("/{ownerId}/edit", this::initUpdateOwnerForm)
+                .POST("/{ownerId}/edit", this::processUpdateOwnerForm)
                 .GET("/{ownerId}", this::showOwner) //
         ).build();
     }
@@ -121,13 +124,7 @@ class OwnerRoutes {
     private ServerResponse processCreationForm(ServerRequest request) {
         Map<String, Object> model = new HashMap<>();
         Owner owner = new Owner();
-        ServletRequestDataBinder binder = new ServletRequestDataBinder(owner, "owner");
-        binder.setValidator(validator);
-        binder.bind(request.servletRequest());
-        binder.validate();
-        BindingResult result = binder.getBindingResult();
-        model.put("owner", owner);
-        model.put("org.springframework.validation.BindingResult.owner", result);
+        BindingResult result = bindOwner(owner, model, request);
         if (result.hasErrors()) {
             return ServerResponse.ok().render(VIEWS_OWNER_CREATE_OR_UPDATE_FORM, model);
         }
@@ -135,6 +132,46 @@ class OwnerRoutes {
             this.owners.save(owner);
             return ServerResponse.ok().render("redirect:/owners/" + owner.getId(), model);
         }
+    }
+
+    private void setAllowedFields(WebDataBinder dataBinder) {
+        dataBinder.setDisallowedFields("id");
+    }
+
+    private ServerResponse initUpdateOwnerForm(ServerRequest request) {
+        Map<String, Object> model = new HashMap<>();
+        Owner owner = this.owners
+                .findById(Integer.valueOf(request.pathVariable("ownerId")));
+        model.put("owner", owner);
+        return ServerResponse.ok().render(VIEWS_OWNER_CREATE_OR_UPDATE_FORM, model);
+    }
+
+    private ServerResponse processUpdateOwnerForm(ServerRequest request) {
+        Map<String, Object> model = new HashMap<>();
+        Owner owner = new Owner();
+        BindingResult result = bindOwner(owner, model, request);
+        if (result.hasErrors()) {
+            return ServerResponse.ok().render(VIEWS_OWNER_CREATE_OR_UPDATE_FORM, model);
+        }
+        else {
+            owner.setId(Integer.valueOf(request.pathVariable("ownerId")));
+            model.put("ownerId", owner.getId());
+            this.owners.save(owner);
+            return ServerResponse.ok().render("redirect:/owners/{ownerId}", model);
+        }
+    }
+
+    private BindingResult bindOwner(Owner owner, Map<String, Object> model,
+            ServerRequest request) {
+        ServletRequestDataBinder binder = new ServletRequestDataBinder(owner, "owner");
+        binder.setValidator(validator);
+        setAllowedFields(binder);
+        binder.bind(request.servletRequest());
+        binder.validate();
+        BindingResult result = binder.getBindingResult();
+        model.put("owner", owner);
+        model.put("org.springframework.validation.BindingResult.owner", result);
+        return result;
     }
 
 }
