@@ -13,6 +13,7 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -95,6 +96,31 @@ public class OwnerRoutesTests {
                 .andExpect(model().attributeHasFieldErrorCode("owner", "lastName",
                         "notFound"))
                 .andExpect(view().name("owners/findOwners"));
+    }
+
+    @Test
+    public void testInitCreationForm() throws Exception {
+        mockMvc.perform(get("/owners/new")).andExpect(status().isOk())
+                .andExpect(model().attributeExists("owner"))
+                .andExpect(view().name("owners/createOrUpdateOwnerForm"));
+    }
+
+    @Test
+    public void testProcessCreationFormSuccess() throws Exception {
+        mockMvc.perform(post("/owners/new").param("firstName", "Joe")
+                .param("lastName", "Bloggs").param("address", "123 Caramel Street")
+                .param("city", "London").param("telephone", "01316761638"))
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    public void testProcessCreationFormHasErrors() throws Exception {
+        mockMvc.perform(post("/owners/new").param("firstName", "Joe")
+                .param("lastName", "Bloggs").param("city", "London"))
+                .andExpect(status().isOk()).andExpect(model().attributeHasErrors("owner"))
+                .andExpect(model().attributeHasFieldErrors("owner", "address"))
+                .andExpect(model().attributeHasFieldErrors("owner", "telephone"))
+                .andExpect(view().name("owners/createOrUpdateOwnerForm"));
     }
 
 }

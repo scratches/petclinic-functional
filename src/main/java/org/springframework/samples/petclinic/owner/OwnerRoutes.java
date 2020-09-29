@@ -19,9 +19,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.RouterFunctions;
@@ -35,10 +37,16 @@ import org.springframework.web.servlet.function.ServerResponse;
 @Configuration(proxyBeanMethods = false)
 class OwnerRoutes {
 
+    private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
+
     private final OwnerRepository owners;
 
-    public OwnerRoutes(OwnerRepository clinicService) {
+    private Validator validator;
+
+    public OwnerRoutes(OwnerRepository clinicService,
+            @Qualifier("mvcValidator") Validator validator) {
         this.owners = clinicService;
+        this.validator = validator;
     }
 
     @Bean
@@ -46,8 +54,10 @@ class OwnerRoutes {
         return RouterFunctions.route().path("/owners", builder -> builder //
                 .GET("", this::processFindForm) //
                 .GET("/find", this::initFindForm) //
-                .GET("/{ownerId}", this::showOwner)) //
-                .build();
+                .GET("/new", this::initCreationForm) //
+                .POST("/new", this::processCreationForm) //
+                .GET("/{ownerId}", this::showOwner) //
+        ).build();
     }
 
     private ServerResponse initFindForm(ServerRequest request) {
@@ -98,6 +108,32 @@ class OwnerRoutes {
             // multiple owners found
             model.put("selections", results);
             return "owners/ownersList";
+        }
+    }
+
+    private ServerResponse initCreationForm(ServerRequest request) {
+        Map<String, Object> model = new HashMap<>();
+        Owner owner = new Owner();
+        model.put("owner", owner);
+        return ServerResponse.ok().render(VIEWS_OWNER_CREATE_OR_UPDATE_FORM, model);
+    }
+
+    private ServerResponse processCreationForm(ServerRequest request) {
+        Map<String, Object> model = new HashMap<>();
+        Owner owner = new Owner();
+        ServletRequestDataBinder binder = new ServletRequestDataBinder(owner, "owner");
+        binder.setValidator(validator);
+        binder.bind(request.servletRequest());
+        binder.validate();
+        BindingResult result = binder.getBindingResult();
+        model.put("owner", owner);
+        model.put("org.springframework.validation.BindingResult.owner", result);
+        if (result.hasErrors()) {
+            return ServerResponse.ok().render(VIEWS_OWNER_CREATE_OR_UPDATE_FORM, model);
+        }
+        else {
+            this.owners.save(owner);
+            return ServerResponse.ok().render("redirect:/owners/" + owner.getId(), model);
         }
     }
 

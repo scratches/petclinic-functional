@@ -15,8 +15,6 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import java.util.Map;
-
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -47,24 +45,6 @@ class OwnerController {
     @InitBinder
     public void setAllowedFields(WebDataBinder dataBinder) {
         dataBinder.setDisallowedFields("id");
-    }
-
-    @GetMapping("/owners/new")
-    public String initCreationForm(Map<String, Object> model) {
-        Owner owner = new Owner();
-        model.put("owner", owner);
-        return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-    }
-
-    @PostMapping("/owners/new")
-    public String processCreationForm(@Valid Owner owner, BindingResult result) {
-        if (result.hasErrors()) {
-            return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-        }
-        else {
-            this.owners.save(owner);
-            return "redirect:/owners/" + owner.getId();
-        }
     }
 
     @GetMapping("/owners/{ownerId}/edit")
