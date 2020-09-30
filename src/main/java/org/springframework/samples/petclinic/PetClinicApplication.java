@@ -16,8 +16,13 @@
 
 package org.springframework.samples.petclinic;
 
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 /**
  * PetClinic Spring Boot Application.
@@ -32,4 +37,23 @@ public class PetClinicApplication {
         SpringApplication.run(PetClinicApplication.class, args);
     }
 
+    @Bean
+    public static BeanDefinitionRegistryPostProcessor ripper() {
+        return new BeanDefinitionRegistryPostProcessor() {
+
+            @Override
+            public void postProcessBeanFactory(
+                    ConfigurableListableBeanFactory beanFactory) throws BeansException {
+            }
+
+            @Override
+            public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry)
+                    throws BeansException {
+                if (registry.containsBeanDefinition("methodValidationPostProcessor")) {
+                    registry.removeBeanDefinition("methodValidationPostProcessor");
+                }
+            }
+
+        };
+    }
 }
