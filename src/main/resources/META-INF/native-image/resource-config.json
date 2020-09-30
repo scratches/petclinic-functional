@@ -1,5 +1,8 @@
 {
   "bundles": [
     {"name":"messages/messages"}
+  ],
+  "resources": [
+  	{ "pattern": "^org/springframework/samples/petclinic/PetClinicApplication.class$"}
   ]
 }
