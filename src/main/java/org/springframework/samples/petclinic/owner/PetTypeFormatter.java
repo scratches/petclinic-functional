@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,8 +27,8 @@ import org.springframework.stereotype.Component;
 /**
  * Instructs Spring MVC on how to parse and print elements of type 'PetType'. Starting from Spring 3.0, Formatters have
  * come as an improvement in comparison to legacy PropertyEditors. See the following links for more details: - The
- * Spring ref doc: https://docs.spring.io/spring/docs/current/spring-framework-reference/html/validation.html#format-Formatter-SPI
- * - A nice blog entry from Gordon Dickens: /ZhdnZ/wordpress/2010/09/30/using-spring-3-0-custom-type-converter/
+ * Spring ref doc: http://static.springsource.org/spring/docs/current/spring-framework-reference/html/validation.html#format-Formatter-SPI
+ * - A nice blog entry from Gordon Dickens: http://gordondickens.com/wordpress/2010/09/30/using-spring-3-0-custom-type-converter/
  * <p/>
  *
  * @author Mark Fisher

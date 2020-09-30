@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,42 +17,44 @@ package org.springframework.samples.petclinic.owner;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.model.BaseEntity;
 
 /**
- * Repository class for <code>Pet</code> domain objects All method names are compliant with Spring Data naming
- * conventions so this interface can easily be extended for Spring Data See here: https://docs.spring.io/spring-data/jpa/docs/current/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
+ * Repository class for <code>Pet</code> domain objects All method names are compliant
+ * with Spring Data naming conventions so this interface can easily be extended for Spring
+ * Data See here:
+ * http://static.springsource.org/spring-data/jpa/docs/current/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface PetRepository extends Repository<Pet, Integer> {
+public interface PetRepository {
 
     /**
-     * Retrieve all {@link PetType}s from the data store.
-     * @return a Collection of {@link PetType}s.
+     * Retrieve all <code>PetType</code>s from the data store.
+     *
+     * @return a <code>Collection</code> of <code>PetType</code>s
      */
-    @Query("SELECT ptype FROM PetType ptype ORDER BY ptype.name")
-    @Transactional(readOnly = true)
-    List<PetType> findPetTypes();
+    List<PetType> findPetTypes() throws DataAccessException;
 
     /**
-     * Retrieve a {@link Pet} from the data store by id.
+     * Retrieve a <code>Pet</code> from the data store by id.
+     *
      * @param id the id to search for
-     * @return the {@link Pet} if found
+     * @return the <code>Pet</code> if found
+     * @throws org.springframework.dao.DataRetrievalFailureException if not found
      */
-    @Transactional(readOnly = true)
-    Pet findById(Integer id);
+    Pet findById(int id) throws DataAccessException;
 
     /**
-     * Save a {@link Pet} to the data store, either inserting or updating it.
-     * @param pet the {@link Pet} to save
+     * Save a <code>Pet</code> to the data store, either inserting or updating it.
+     *
+     * @param pet the <code>Pet</code> to save
+     * @see BaseEntity#isNew
      */
-    void save(Pet pet);
+    void save(Pet pet) throws DataAccessException;
 
 }
-

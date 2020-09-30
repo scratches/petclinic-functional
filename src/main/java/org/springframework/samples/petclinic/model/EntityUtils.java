@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package org.springframework.samples.petclinic.service;
+package org.springframework.samples.petclinic.model;
 
 import java.util.Collection;
 
-import org.springframework.orm.ObjectRetrievalFailureException;
-import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.dao.DataRetrievalFailureException;
 
 /**
- * Utility methods for handling entities. Separate from the BaseEntity class mainly because of dependency on the
- * ORM-associated ObjectRetrievalFailureException.
+ * Utility methods for handling entities. Separate from the BaseEntity class
+ * mainly because of dependency on the ORM-associated
+ * ObjectRetrievalFailureException.
  *
  * @author Juergen Hoeller
  * @author Sam Brannen
@@ -33,7 +33,8 @@ import org.springframework.samples.petclinic.model.BaseEntity;
 public abstract class EntityUtils {
 
     /**
-     * Look up the entity of the given class with the given id in the given collection.
+     * Look up the entity of the given class with the given id in the given
+     * collection.
      *
      * @param entities    the collection to search
      * @param entityClass the entity class to look up
@@ -42,13 +43,13 @@ public abstract class EntityUtils {
      * @throws ObjectRetrievalFailureException if the entity was not found
      */
     public static <T extends BaseEntity> T getById(Collection<T> entities, Class<T> entityClass, int entityId)
-        throws ObjectRetrievalFailureException {
+            throws DataRetrievalFailureException {
         for (T entity : entities) {
             if (entity.getId() == entityId && entityClass.isInstance(entity)) {
                 return entity;
             }
         }
-        throw new ObjectRetrievalFailureException(entityClass, entityId);
+        throw new DataRetrievalFailureException("Cannot find: " + entityClass);
     }
 
 }
