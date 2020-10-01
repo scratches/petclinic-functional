@@ -1,8 +1,30 @@
 {
-  "bundles": [
-    {"name":"messages/messages"}
-  ],
-  "resources": [
-  	{ "pattern": "^org/springframework/samples/petclinic/PetClinicApplication.class$"}
-  ]
+	"bundles": [
+		{
+			"name": "messages/messages"
+		}
+	],
+	"resources": [
+		{
+			"pattern": "^schema.sql$"
+		},
+		{
+			"pattern": "^data.sql$"
+		},
+		{
+			"pattern": "^git.properties$"
+		},
+		{
+			"pattern": "^org/springframework/web/util/HtmlCharacterEntityReferences.properties$"
+		},
+		{
+			"pattern": "webjars/.*"
+		},
+		{
+			"pattern": "static/.*"
+		},
+		{
+			"pattern": "templates/.*"
+		}
+	]
 }

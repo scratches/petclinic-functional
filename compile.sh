@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ARTIFACT=init-spring-petclinic
+ARTIFACT=petclinic-functional
 MAINCLASS=org.springframework.samples.petclinic.PetClinicApplication
 VERSION=0.2.1-SNAPSHOT
 
