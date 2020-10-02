@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>org.springframework.experimental</groupId>
 			<artifactId>spring-graalvm-native</artifactId>
-			<version>0.8.1-RC1</version>
+			<version>0.8.2-SNAPSHOT</version>
 		</dependency>
 		<!-- Spring and Spring Boot dependencies -->
 		<dependency>
@@ -199,7 +199,6 @@
 				</configuration>
 			</plugin>
 
-
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -229,26 +228,6 @@
 				</executions>
 			</plugin>
 
-
-			<plugin>
-				<groupId>com.google.cloud.tools</groupId>
-				<artifactId>jib-maven-plugin</artifactId>
-				<version>0.10.1</version>
-				<configuration>
-					<to>
-						<image>dsyer/${project.artifactId}:${project.version}</image>
-					</to>
-					<container>
-						<jvmFlags>
-							<jvmFlag>-Dspring.devtools.restart.enabled=false</jvmFlag>
-							<jvmFlag>-noverify</jvmFlag>
-							<jvmFlag>-XX:TieredStopAtLevel=1</jvmFlag>
-						</jvmFlags>
-					</container>
-				</configuration>
-			</plugin>
-
-
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -268,8 +247,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
-
 
 			<!-- Spring Boot Actuator displays build-related information if a git.properties 
 				file is present at the classpath -->

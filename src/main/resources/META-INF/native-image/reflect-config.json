@@ -82,6 +82,9 @@
 		"allDeclaredClasses": true
 	},
 	{
+		"name": "org.webjars.WebJarAssetLocator"
+	},
+	{
 		"name": "org.springframework.http.converter.FormHttpMessageConverter",
 		"fields": [
 			{
@@ -93,7 +96,8 @@
 		"name": "org.springframework.boot.web.servlet.server.Encoding",
 		"allDeclaredConstructors": true,
 		"allDeclaredMethods": true
-	},{
+	},
+	{
 		"name": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties",
 		"allDeclaredConstructors": true,
 		"allDeclaredMethods": true
@@ -218,9 +222,9 @@
 				]
 			}
 		]
-	},{"name":
-	"org.springframework.boot.autoconfigure.jdbc.DataSourceInitializerPostProcessor"
-,
+	},
+	{
+		"name": "org.springframework.boot.autoconfigure.jdbc.DataSourceInitializerPostProcessor",
 		"allDeclaredFields": true,
 		"allDeclaredConstructors": true,
 		"allDeclaredMethods": true

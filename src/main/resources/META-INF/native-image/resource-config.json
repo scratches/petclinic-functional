@@ -1,9 +1,4 @@
 {
-	"bundles": [
-		{
-			"name": "messages/messages"
-		}
-	],
 	"resources": [
 		{
 			"pattern": "^schema.sql$"
@@ -18,13 +13,18 @@
 			"pattern": "^org/springframework/web/util/HtmlCharacterEntityReferences.properties$"
 		},
 		{
-			"pattern": "webjars/.*"
+			"pattern": "^META-INF/resources/webjars/.*"
 		},
 		{
-			"pattern": "static/.*"
+			"pattern": "^static/.*"
 		},
 		{
-			"pattern": "templates/.*"
+			"pattern": "^templates/.*"
+		}
+	],
+	"bundles": [
+		{
+			"name": "messages/messages"
 		}
 	]
 }
