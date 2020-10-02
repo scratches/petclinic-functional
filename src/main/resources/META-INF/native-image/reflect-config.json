@@ -82,7 +82,8 @@
 		"allDeclaredClasses": true
 	},
 	{
-		"name": "org.webjars.WebJarAssetLocator"
+		"name": "org.springframework.samples.petclinic.owner.PetTypeFormatter",
+		"allDeclaredConstructors": true
 	},
 	{
 		"name": "org.springframework.http.converter.FormHttpMessageConverter",
@@ -107,8 +108,8 @@
 		"allDeclaredConstructors": true
 	},
 	{
-		"name": "org.springframework.samples.petclinic.owner.PetTypeFormatter",
-		"allDeclaredConstructors": true
+		"name": "org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration",
+		"allDeclaredMethods": true
 	},
 	{
 		"name": "org.apache.logging.log4j.message.DefaultFlowMessageFactory",
