@@ -112,6 +112,10 @@
 		"allDeclaredMethods": true
 	},
 	{
+		"name": "org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration",
+		"allDeclaredMethods": true
+	},
+	{
 		"name": "org.apache.logging.log4j.message.DefaultFlowMessageFactory",
 		"allDeclaredConstructors": true
 	},
