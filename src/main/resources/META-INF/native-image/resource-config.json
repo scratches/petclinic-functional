@@ -10,6 +10,9 @@
 			"pattern": "^git.properties$"
 		},
 		{
+			"pattern": "^META-INF/build-info.properties$"
+		},
+		{
 			"pattern": "^org/springframework/web/util/HtmlCharacterEntityReferences.properties$"
 		},
 		{
