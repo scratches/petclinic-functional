@@ -1,13 +1,10 @@
 {
 	"resources": [
 		{
-			"pattern": "^schema.sql$"
-		},
-		{
 			"pattern": "^application.*\\.properties$"
 		},
 		{
-			"pattern": "^data.sql$"
+			"pattern": "^db/.*\\.sql$"
 		},
 		{
 			"pattern": "^git.properties$"
