@@ -4,6 +4,9 @@
 			"pattern": "^schema.sql$"
 		},
 		{
+			"pattern": "^application.*\\.properties$"
+		},
+		{
 			"pattern": "^data.sql$"
 		},
 		{
