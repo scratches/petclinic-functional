@@ -19,6 +19,9 @@
 			"pattern": "^org/springframework/web/util/HtmlCharacterEntityReferences.properties$"
 		},
 		{
+			"pattern": "^com/mysql/cj/util/TimeZoneMapping.properties$"
+		},
+		{
 			"pattern": "^META-INF/resources/webjars/.*"
 		},
 		{
