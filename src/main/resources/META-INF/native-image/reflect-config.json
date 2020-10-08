@@ -9,9 +9,7 @@
 {"name":"org.springframework.boot.web.servlet.server.Encoding","allDeclaredConstructors":true,"allDeclaredMethods":true},
 {"name":"org.springframework.boot.autoconfigure.jdbc.DataSourceProperties","allDeclaredConstructors":true,"allDeclaredMethods":true},
 {"name":"org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration","allDeclaredMethods":true},
-{"name":"org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration","allDeclaredMethods":true},
 {"name":"org.hibernate.validator.internal.properties.DefaultGetterPropertySelectionStrategy","allDeclaredConstructors":true},
-{"name":"org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari","allDeclaredFields":true,"allDeclaredConstructors":true,"allDeclaredMethods":true,"methods":[{"name":"dataSource","parameterTypes":["org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"]}]},
 {"name":"org.springframework.boot.actuate.health.Health","allDeclaredFields":true,"allDeclaredConstructors":true,"allDeclaredMethods":true},
 {"name":"org.springframework.boot.autoconfigure.web.ResourceProperties$Cache","allDeclaredFields":true,"allDeclaredConstructors":true,"allDeclaredMethods":true},
 {"name":"org.springframework.boot.autoconfigure.web.ResourceProperties$Cache$Cachecontrol","allDeclaredFields":true,"allDeclaredConstructors":true,"allDeclaredMethods":true}
