@@ -8,13 +8,13 @@ services:
       - MYSQL_ROOT_PASSWORD=petclinic
       - MYSQL_DATABASE=petclinic
     volumes:
-      - "./conf.d:/etc/mysql/conf.d:ro"
+      - ./src/main/resources/db/mysql/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
+      - ./src/main/resources/db/mysql/data.sql:/docker-entrypoint-initdb.d/2-data.sql
   petclinic:
     image: petclinic-functional:0.2.1-SNAPSHOT
     environment:
       - SPRING_PROFILES_ACTIVE=mysql
       - MYSQL_HOST=mysql
-      - SPRING_APPLICATION_JSON={"logging.level.org.springframework.boot":"TRACE"}
     ports:
       - "8080:8080"
     depends_on:
