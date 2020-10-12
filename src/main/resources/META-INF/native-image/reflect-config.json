@@ -8,8 +8,5 @@
 {"name":"org.springframework.samples.petclinic.owner.PetTypeFormatter","allDeclaredConstructors":true},
 {"name":"org.springframework.boot.web.servlet.server.Encoding","allDeclaredConstructors":true,"allDeclaredMethods":true},
 {"name":"org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration","allDeclaredMethods":true},
-{"name":"org.hibernate.validator.internal.properties.DefaultGetterPropertySelectionStrategy","allDeclaredConstructors":true},
-{"name":"org.springframework.boot.actuate.health.Health","allDeclaredFields":true,"allDeclaredConstructors":true,"allDeclaredMethods":true},
-{"name":"org.springframework.boot.autoconfigure.web.ResourceProperties$Cache","allDeclaredFields":true,"allDeclaredConstructors":true,"allDeclaredMethods":true},
-{"name":"org.springframework.boot.autoconfigure.web.ResourceProperties$Cache$Cachecontrol","allDeclaredFields":true,"allDeclaredConstructors":true,"allDeclaredMethods":true}
+{"name":"org.hibernate.validator.internal.properties.DefaultGetterPropertySelectionStrategy","allDeclaredConstructors":true}
 ]

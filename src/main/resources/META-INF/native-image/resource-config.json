@@ -1,33 +1,4 @@
 {
-	"resources": [
-		{
-			"pattern": "^application.*\\.properties$"
-		},
-		{
-			"pattern": "^db/.*\\.sql$"
-		},
-		{
-			"pattern": "^git.properties$"
-		},
-		{
-			"pattern": "^META-INF/build-info.properties$"
-		},
-		{
-			"pattern": "^org/springframework/web/util/HtmlCharacterEntityReferences.properties$"
-		},
-		{
-			"pattern": "^com/mysql/cj/util/TimeZoneMapping.properties$"
-		},
-		{
-			"pattern": "^META-INF/resources/webjars/.*"
-		},
-		{
-			"pattern": "^static/.*"
-		},
-		{
-			"pattern": "^templates/.*"
-		}
-	],
 	"bundles": [
 		{
 			"name": "messages/messages"
